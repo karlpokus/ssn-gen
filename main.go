@@ -6,6 +6,7 @@ import (
 	"time"
 	"strconv"
 	"strings"
+	"flag"
 )
 
 // >= min && < max
@@ -58,10 +59,22 @@ func sliceToString(a []int) string {
   return strings.Join(b, "")
 }
 
+func ssnGen(n int) string {
+	var out []string
+
+	for i := 0; i < n; i++ {
+		out = append(out, sliceToString(completeBuild(partialBuild())))
+	}
+	return strings.Join(out, "\n")
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	ssn := sliceToString(completeBuild(partialBuild()))
+	var ssns = flag.Int("ssns", 3, "number of ssns to create")
+	flag.Parse()
 
-	fmt.Println(ssn)
+	data := ssnGen(*ssns);
+
+	fmt.Print(data)
 }

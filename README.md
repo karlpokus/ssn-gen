@@ -3,9 +3,10 @@ Swedish personnummer generator. Work in progress
 
 # usage
 ```bash
-# dumps a valid ssn to stdout
-$ go run main.go
+# writes n valid line-separated ssns to file
+$ go run main.go --ssns=n > file
 ```
+Benchmark: 1M ssns in 0.9s
 
 # license
 MIT
