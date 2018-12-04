@@ -1,12 +1,22 @@
 # ssn-gen
-Swedish personnummer generator. Work in progress
+Swedish personnummer generator in go
 
 # usage
+Writes n valid line-separated ssns to file
+
 ```bash
-# writes n valid line-separated ssns to file
-$ go run main.go --ssns=n > file
+$ ./ssn-gen --ssns=n > file
 ```
-Benchmark: 1M ssns in 0.9s
+
+Benchmark 1M ssns. A [nodeJS implementation](https://github.com/karlpokus/pernr/tree/fix/no-limit) for comparison.
+
+```bash
+$ /usr/bin/time -lp ./ssn-gen --ssns=1000000 > file
+real         0.81
+user         1.01
+sys          0.07
+ 114921472  maximum resident set size # ~115 MB
+```
 
 # license
 MIT
