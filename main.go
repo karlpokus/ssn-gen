@@ -1,5 +1,5 @@
 /*
-	version 0.1
+	version 0.3?
 */
 
 package main
@@ -27,48 +27,76 @@ func randInts(min, max int) (int, int, int) {
 	return num / 10 % 10, num % 10, 0
 }
 
-func partialBuild() []int {
-	y, yy, _ := randInts(0, 100)
-	m, mm, _ := randInts(1, 13)
-	d, dd, _ := randInts(1, 29)
-	x, xx, xxx := randInts(111, 1000)
+func partialBuild(n int) <-chan []int {
+	out := make(chan []int)
 
-	return []int{y, yy, m, mm, d, dd, x, xx, xxx}
-}
+	go func() {
+		for i := 0; i < n; i++ {
+			y, yy, _ := randInts(0, 100)
+			m, mm, _ := randInts(1, 13)
+			d, dd, _ := randInts(1, 29)
+			x, xx, xxx := randInts(111, 1000)
 
-func completeBuild(ints []int) []int {
-	var sum int
-
-	for i, v := range ints {
-		v = v * (2 - i % 2)
-
-		if v >= 10 {
-			v -= 9
+			out <- []int{y, yy, m, mm, d, dd, x, xx, xxx}
 		}
-		sum += v
-	}
+		close(out)
+	}()
 
-	lastDigit := (100 - sum) % 10
-
-	return append(ints, lastDigit)
+	return out
 }
 
-func sliceToString(a []int) string {
-  b := make([]string, len(a))
+func completeBuild(in <-chan []int) <-chan []int {
+	out := make(chan []int)
 
-	for i, v := range a {
-  	b[i] = strconv.Itoa(v)
-  }
+	go func() {
+		for ints := range in {
+			var sum int
 
-  return strings.Join(b, "")
+			for i, v := range ints {
+				v = v * (2 - i % 2)
+
+				if v >= 10 {
+					v -= 9
+				}
+				sum += v
+			}
+
+			lastDigit := (100 - sum) % 10
+
+			out <- append(ints, lastDigit)
+		}
+		close(out)
+	}()
+
+	return out
+}
+
+func sliceToString(in <-chan []int) <-chan string {
+	out := make(chan string)
+
+	go func() {
+		for ints := range in {
+			temp := make([]string, len(ints))
+
+			for i, v := range ints {
+		  	temp[i] = strconv.Itoa(v)
+		  }
+
+		  out <- strings.Join(temp, "")
+		}
+		close(out)
+	}()
+
+	return out
 }
 
 func ssnGen(n int) string {
 	var out []string
 
-	for i := 0; i < n; i++ {
-		out = append(out, sliceToString(completeBuild(partialBuild())))
+	for s := range sliceToString(completeBuild(partialBuild(n))) {
+		out = append(out, s)
 	}
+
 	return strings.Join(out, "\n")
 }
 
@@ -79,6 +107,5 @@ func main() {
 	flag.Parse()
 
 	data := ssnGen(*ssns);
-
 	fmt.Print(data)
 }
