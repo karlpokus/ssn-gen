@@ -15,6 +15,7 @@ func conf(stdout, stderr *log.Logger) srv.ConfFunc {
 		router.HandlerFunc("GET", "/ssn/:n", ssn.Gen(stdout, stderr))
 		s.Router = router
 		s.Logger = stdout
+		s.Host = "0.0.0.0"
 		return nil
 	}
 }
