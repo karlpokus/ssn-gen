@@ -1,11 +1,11 @@
 # ssn-gen
-Swedish personnummer generator in go
+Generate safe swedish personnummer in go. By safe we mean personnummer with the last 4 digits starting with 99|98 which are not in use.
 
 # Usage
-Writes n valid line-separated ssns to stdout
+Writes n safe line-separated ssns to stdout
 
 ```bash
-$ ./ssn-gen --ssns=n > file
+$ go run ./cmd/main [--ssns int]
 ```
 
 # Benchmarks
@@ -20,6 +20,11 @@ sys          0.07
 ```
 
 note: see other branches in this repo for other implementations and benchmarks
+
+# todos
+- [x] safe ssn
+- [ ] opt to set age
+- [ ] tests
 
 # license
 MIT
