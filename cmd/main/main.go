@@ -1,14 +1,34 @@
 package main
 
 import (
-	"fmt"
-	"flag"
+	"log"
+	"os"
+
 	"ssn"
+	"github.com/karlpokus/srv"
+	"github.com/julienschmidt/httprouter"
 )
 
-var n = flag.Int("ssns", 3, "number of ssns to create")
+func conf(stdout, stderr *log.Logger) srv.ConfFunc {
+	return func(s *srv.Server) error {
+		router := httprouter.New()
+		router.HandlerFunc("GET", "/ssn/:n", ssn.Gen(stdout, stderr))
+		s.Router = router
+		s.Logger = stdout
+		return nil
+	}
+}
 
 func main() {
-	flag.Parse()
-	fmt.Print(ssn.Gen(*n))
+	stdout := log.New(os.Stdout, "server ", log.Ldate|log.Ltime)
+	stderr := log.New(os.Stderr, "server ", log.Ldate|log.Ltime)
+	s, err := srv.New(conf(stdout, stderr))
+	if err != nil {
+		stderr.Fatal(err)
+	}
+	err = s.Start()
+	if err != nil {
+		stderr.Fatal(err)
+	}
+	stdout.Println("main exited")
 }

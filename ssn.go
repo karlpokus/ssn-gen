@@ -57,8 +57,8 @@ func toString(a []int) string {
   return strings.Join(b, "")
 }
 
-// Gen returns n safe ssns separated by line breaks
-func Gen(n int) string {
+// GenN returns n safe ssns separated by line breaks
+func GenN(n int) string {
 	rand.Seed(time.Now().UnixNano())
 	var out []string
 
