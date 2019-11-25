@@ -9,6 +9,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+func routes(stdout, stderr *log.Logger) http.Handler {
+	router := httprouter.New()
+	router.HandlerFunc("GET", "/ssn/:n", Gen(stdout, stderr))
+	return router
+}
+
 func Gen(stdout, stderr *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		params := httprouter.ParamsFromContext(r.Context())
