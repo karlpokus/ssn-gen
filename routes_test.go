@@ -21,13 +21,22 @@ func TestFoo(t *testing.T) {
 		return s
 	}, []routest.Data{
 		{
-			"Gen route",
+			"gen ssn invalid",
 			"GET",
 			"/ssn/foo",
 			nil,
 			nil,
 			400,
 			[]byte("foo is not a valid int"),
+		},
+		{
+			"gen ssn valid but rate limited",
+			"GET",
+			"/ssn/2",
+			nil,
+			nil,
+			429,
+			[]byte("Too Many Requests"),
 		},
 	})
 }

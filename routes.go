@@ -7,11 +7,12 @@ import (
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/karlpokus/ratelmt"
 )
 
 func routes(stdout, stderr *log.Logger) http.Handler {
 	router := httprouter.New()
-	router.HandlerFunc("GET", "/ssn/:n", Gen(stdout, stderr))
+	router.HandlerFunc("GET", "/ssn/:n", ratelmt.Mw(1, Gen(stdout, stderr)))
 	return router
 }
 

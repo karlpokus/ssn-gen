@@ -31,7 +31,7 @@ $ go test
 - [x] http server
 - [ ] opt to set age
 - [x] tests
-- [ ] rate limiting
+- [x] rate limiting
 - [ ] don't run as [root](https://medium.com/@chemidy/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324)
 - [ ] add [valid opt](https://ssn-machine.herokuapp.com/valid?ssn=<ssn>)
 
