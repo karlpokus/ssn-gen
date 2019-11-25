@@ -2,14 +2,14 @@ package ssn
 
 import (
 	"math/rand"
-	"time"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // randInts generates a random number (>= min && < max) and returns them one by one
 func randInts(min, max int) (int, int, int) {
-	num := min + rand.Intn(max - min)
+	num := min + rand.Intn(max-min)
 	if num > 99 {
 		return num / 100 % 10, num / 10 % 10, num % 10
 	}
@@ -34,7 +34,7 @@ func partial() []int {
 func complete(ints []int) []int {
 	var sum int
 	for i, v := range ints {
-		v = v * (2 - i % 2)
+		v = v * (2 - i%2)
 		if v >= 10 {
 			v -= 9
 		}
@@ -47,14 +47,14 @@ func complete(ints []int) []int {
 // toString takes a slice of ints and returns a personnummer string in the
 // format yymmdd-xxxx
 func toString(a []int) string {
-  b := make([]string, len(a)+1) // +1 for the separator
+	b := make([]string, len(a)+1) // +1 for the separator
 	for i, v := range a {
 		if i == 6 {
 			b = append(b, "-")
 		}
 		b = append(b, strconv.Itoa(v))
-  }
-  return strings.Join(b, "")
+	}
+	return strings.Join(b, "")
 }
 
 // GenN returns n safe ssns separated by line breaks

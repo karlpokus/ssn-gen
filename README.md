@@ -21,11 +21,19 @@ request n ssns
 GET http://localhost:9012/ssn/<n>
 ```
 
+# tests
+```bash
+$ go test
+```
+
 # todos
 - [x] safe ssn
 - [x] http server
 - [ ] opt to set age
-- [ ] tests
+- [x] tests
+- [ ] rate limiting
+- [ ] don't run as [root](https://medium.com/@chemidy/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324)
+- [ ] add [valid opt](https://ssn-machine.herokuapp.com/valid?ssn=<ssn>)
 
 # license
 MIT
